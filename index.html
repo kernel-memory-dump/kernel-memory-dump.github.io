@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>SNOVAK</title>
-        <script>
-            setTimeout(function () {
-                document.getElementById("title").style.color = "#99ffee";
-                document.getElementById("title").style.color = "#99eeee";
-            }, 7400);
-        </script>
-    </head>
-    <body>
-        <marquee> <h1 id="title">Sebastian Novak GITHUB PAGE </h1>  </marquee>
-        <p>
-            <marquee direction="right">- UNDER CONSTRUCTION -</marquee>
-        </p>
-    </body>
+
+<head>
+    <meta charset="utf-8">
+    <title>SNOVAK</title>
+    <script>
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        setInterval(function () {
+            document.getElementById("title").style.color = getRandomColor();
+            document.getElementById("h2").style.color = getRandomColor();
+        }, 13000);
+    </script>
+</head>
+
+<body>
+    <marquee>
+        <h1 id="title">Sebastian Novak GITHUB PAGE </h1>
+    </marquee>
+   <marquee  direction="right"> <h2 id="h2">- UNDER CONSTRUCTION - </h2> </marquee>
+
+</body>
+
 </html>
