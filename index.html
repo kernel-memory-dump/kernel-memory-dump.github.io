@@ -30,8 +30,7 @@
             const result = await Notification.requestPermission();
             if(result !== 'granted') {
                     throw new Error(`RIP :'(  Permission value: ${result}`);
-                }
-            resolve();
+            }
         }
 
         requestPermissionAsync().then( () => {
