@@ -25,7 +25,30 @@
         <h1 id="title">Sebastian Novak GITHUB PAGE </h1>
     </marquee>
    <marquee  direction="right"> <h2 id="h2">- UNDER CONSTRUCTION - </h2> </marquee>
+    <script>
+        async function requestPermissionAsync() {
+            const result = await Notification.requestPermission();
+            if(result !== 'granted') {
+                    throw new Error(`RIP :'(  Permission value: ${result}`);
+                }
+            resolve();
+        }
 
+        requestPermissionAsync().then( () => {
+            // yay
+          // time to show off
+          let options = {
+            icon: "https://static.vegaitsourcing.rs/media/1028/logo.gif",
+            body: "<b>V8 rocks </b>"
+          };
+          let demo = new Notification("Event Loop Spin", options);
+          // register an event handler in the same even loop spin that will be triggered 
+          // upon completion of current function
+          demo.onshow = () => alert("Already shown...but hey, here's a callback :)");
+        });
+        
+        
+    </script>
 </body>
 
 </html>
