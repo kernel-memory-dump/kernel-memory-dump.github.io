@@ -45,8 +45,8 @@
         requestPermissionToShowThatJSBadAsync().then(() => {
             // JS is bad
             const options = {
-                icon: "https://info.kernel-memory-dump.dev/bad.ico",
-                body: "/BAD.png"
+                icon: "/BAD.png",
+                body: "BAD"
             };
             const bad = new Notification("JS BAD", options);
             bad.onshow = () => alert("Programmer ɴᴜʟʟposting g00d");
