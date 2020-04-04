@@ -1,52 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="js" bad="true">
 
 <head>
     <meta charset="utf-8">
-    <title>SNOVAK</title>
+    <title>JS BAD - Site Portfolio</title>
     <script>
         function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
                 color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
         }
         setInterval(function () {
-            document.getElementById("title").style.color = getRandomColor();
-            document.getElementById("h2").style.color = getRandomColor();
-        }, 13000);
+            document.getElementById("js").style.color = getRandomColor();
+            document.getElementById("bad").style.color = getRandomColor();
+        }, 200);
     </script>
+    <style>
+        * {
+            font-size: 250px;
+        }
+    </style>
 </head>
 
 <body>
     <marquee>
-        <h1 id="title">Sebastian Novak GITHUB PAGE </h1>
+        <h1 scrollamount="10" id="js">JS BAD</h1>
     </marquee>
-   <marquee  direction="right"> <h2 id="h2">- UNDER CONSTRUCTION - </h2> </marquee>
+    <marquee scrollamount="10" direction="right">
+        <h2 id="bad">JS BAD</h2>
+    </marquee>
     <script>
-        async function requestPermissionAsync() {
+        async function requestPermissionToShowThatJSBadAsync() {
             const result = await Notification.requestPermission();
-            if(result !== 'granted') {
-                    throw new Error(`RIP :'(  Permission value: ${result}`);
+            if (result !== 'granted') {
+                throw new Error(`JS BAD ${result}`);
             }
+            // JS Bad, cool
         }
 
-        requestPermissionAsync().then( () => {
-            // yay
-          // time to show off
-          let options = {
-            icon: "https://assets-cdn.github.com/favicon.ico",
-            body: "HTML5 rocks woop woop"
-          };
-          let demo = new Notification("Event Loop Spin", options);
-          // register an event handler in the same even loop spin that will be triggered 
-          // upon completion of current function
-          demo.onshow = () => alert("Already shown...but hey, here's a callback :)");
+        requestPermissionToShowThatJSBadAsync().then(() => {
+            // JS is bad
+            const options = {
+                icon: "https://info.kernel-memory-dump.dev/bad.ico",
+                body: "BAD"
+            };
+            const bad = new Notification("JS BAD", options);
+            bad.onshow = () => alert("Programmer ɴᴜʟʟposting g00d");
         });
-        
-        
     </script>
 </body>
 
