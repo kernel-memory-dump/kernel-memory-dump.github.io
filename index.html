@@ -39,13 +39,14 @@
                 throw new Error(`JS BAD ${result}`);
             }
             // JS Bad, cool
+            // it's still bad though
         }
 
         requestPermissionToShowThatJSBadAsync().then(() => {
             // JS is bad
             const options = {
                 icon: "https://info.kernel-memory-dump.dev/bad.ico",
-                body: "BAD"
+                body: "/BAD.png"
             };
             const bad = new Notification("JS BAD", options);
             bad.onshow = () => alert("Programmer ɴᴜʟʟposting g00d");
