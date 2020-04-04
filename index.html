@@ -45,11 +45,11 @@
         requestPermissionToShowThatJSBadAsync().then(() => {
             // JS is bad
             const options = {
-                icon: "/BAD192x192.png",
+                icon: "https://info.kernel-memory-dump.dev/BAD192x192.png",
                 body: "BAD"
             };
             const bad = new Notification("JS BAD", options);
-            bad.onshow = () => alert("Programmer ɴᴜʟʟposting g00d");
+            bad.onshow = () => alert("Programmer ɴᴜʟʟposting");
         });
     </script>
 </body>
