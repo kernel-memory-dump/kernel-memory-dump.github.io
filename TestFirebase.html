@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-messaging.js"></script>
+
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+
+
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+
+
+    <script>
+ // Your web app's Firebase configuration
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyCBiqt_s-JfMpigb_7GvJjQGx8CPG40NL4",
+            authDomain: "retailcms-47e30.firebaseapp.com",
+            databaseURL: "https://retailcms-47e30.firebaseio.com",
+            projectId: "retailcms-47e30",
+            storageBucket: "retailcms-47e30.appspot.com",
+            messagingSenderId: "584106809160",
+            appId: "1:584106809160:web:48e04313f378804b21457d",
+            measurementId: "G-11RE7BNR87 "
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+        messaging.usePublicVapidKey("BJS_FMI7h-tvNDgv6dXUvZwosDKlH92t4ZZ68yhomsUYmfN5-KKOQqNg1XG2OSTX8V0-8PKvddW5hzmyseqnmno");
+
+        // Get Instance ID token. Initially this makes a network call, once retrieved
+// subsequent calls to getToken will return from cache.
+messaging.getToken().then((currentToken) => {
+ if (currentToken) {
+ console.log("FCM Token:", currentToken);
+
+ } else {
+
+ }
+}).catch((err) => {
+ console.log('An error occurred while retrieving token. ', err);
+
+});
+
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+        });
+
+
+        
+messaging.requestPermission()
+    .then(() => {
+        console.log("Have Permission");
+        return messaging.getToken();
+    })
+    .then(token => {
+
+        console.log("FCM Token:", token);
+        //Do something with TOken like subscribe to topics
+
+    })
+    .catch(error => {
+        if (error.code === "messaging/permission-blocked") {
+            console.log("Please Unblock Notification Request Manually");
+        } else {
+            console.log("Error Occurred", error);
+        }
+    });
+
+        //messaging.usePublicVapidKey("BJS_FMI7h-tvNDgv6dXUvZwosDKlH92t4ZZ68yhomsUYmfN5-KKOQqNg1XG2OSTX8V0-8PKvddW5hzmyseqnmno");
+
+        // Get Instance ID token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+   
+    </script>
+
+    <script>
+
+     messaging.getToken().then((currentToken) => {
+           if (currentToken) {
+               console.log(`TOKENNNN ${currentToken}`);
+             //  updateUIForPushEnabled(currentToken);
+           } else {
+               // Show permission request.
+               console.log('No Instance ID token available. Request permission to generate one.');
+               // Show permission UI.
+              // updateUIForPushPermissionRequired();
+              // setTokenSentToServer(false);
+           }
+       }).catch((err) => {
+           console.log('An error occurred while retrieving token. ', err);
+        //   setTokenSentToServer(false);
+       });
+
+
+
+       // Callback fired if Instance ID token is updated.
+       messaging.onTokenRefresh(() => {
+           messaging.getToken().then((refreshedToken) => {
+               console.log('Token refreshed.');
+               // Indicate that the new Instance ID token has not yet been sent to the
+               // app server.
+
+               console.log(`TOKENNNN ${refreshedToken}`);
+
+               // ...
+           }).catch((err) => {
+               console.log('Unable to retrieve refreshed token ', err);
+
+           });
+       });
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
