@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -24,7 +24,7 @@
 
         function logIt(msg) {
            const loggerElem = document.getElementById('loggerBox');   
-            loggerElem.innerHTML += `<p>${msg}</p>`;
+            loggerElem.innerHTML = `<p>${msg}</p>` + loggerElem.innerHTML;
         }
         
         
@@ -120,7 +120,7 @@ messaging.requestPermission()
                // app server.
 
                console.log(`REFRESHED TOKENNNN::: ${refreshedToken}`);
-               logIt(`REFRESHED TOKENNNN::: ${refreshedToken});
+               logIt(`REFRESHED TOKENNNN::: ${refreshedToken}`);
                // ...
            }).catch((err) => {
                console.log('Unable to retrieve refreshed token ', err);
