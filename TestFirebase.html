@@ -20,14 +20,13 @@
 
 
     <script>
- // Your web app's Firebase configuration
+        // Your web app's Firebase configuration
 
         function logIt(msg) {
-           const loggerElem = document.getElementById('loggerBox');   
+            const loggerElem = document.getElementById('loggerBox');
             loggerElem.innerHTML = `<p><b>[${(new Date()).toISOString()}]:</b>${unescape(msg).replace(/\\"/g, '"')}</p>` + loggerElem.innerHTML;
         }
-        
-        
+
         var firebaseConfig = {
             apiKey: "AIzaSyCBiqt_s-JfMpigb_7GvJjQGx8CPG40NL4",
             authDomain: "retailcms-47e30.firebaseapp.com",
@@ -45,88 +44,92 @@
         messaging.usePublicVapidKey("BJS_FMI7h-tvNDgv6dXUvZwosDKlH92t4ZZ68yhomsUYmfN5-KKOQqNg1XG2OSTX8V0-8PKvddW5hzmyseqnmno");
 
         // Get Instance ID token. Initially this makes a network call, once retrieved
-// subsequent calls to getToken will return from cache.
-messaging.getToken().then((currentToken) => {
- if (currentToken) {
- console.log("FCM Token:", currentToken);
+        // subsequent calls to getToken will return from cache.
+        messaging.getToken().then((currentToken) => {
+            if (currentToken) {
+                console.log("FCM Token:", currentToken);
 
- } else {
+            } else {
 
- }
-}).catch((err) => {
- console.log('An error occurred while retrieving token. ', err);
+            }
+        }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
 
-});
+        });
 
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
-             logIt(`onMessage: ${JSON.stringify(payload)}`);
+            try {
+                let usefulPayload = payload.data;
+                console.log(`USEFUL DATA`, JSON.parse(usefulPayload));
+            } catch{ }
+            logIt(`onMessage: ${JSON.stringify(payload)}`);
         });
 
 
-        
-messaging.requestPermission()
-    .then(() => {
-        console.log("Have Permission");
-        return messaging.getToken();
-    })
-    .then(token => {
 
-        console.log("FCM Token:", token);
-        //Do something with TOken like subscribe to topics
+        messaging.requestPermission()
+            .then(() => {
+                console.log("Have Permission");
+                return messaging.getToken();
+            })
+            .then(token => {
 
-    })
-    .catch(error => {
-        if (error.code === "messaging/permission-blocked") {
-            console.log("Please Unblock Notification Request Manually");
-        } else {
-            console.log("Error Occurred", error);
-        }
-    });
+                console.log("FCM Token:", token);
+                //Do something with TOken like subscribe to topics
+
+            })
+            .catch(error => {
+                if (error.code === "messaging/permission-blocked") {
+                    console.log("Please Unblock Notification Request Manually");
+                } else {
+                    console.log("Error Occurred", error);
+                }
+            });
 
         //messaging.usePublicVapidKey("BJS_FMI7h-tvNDgv6dXUvZwosDKlH92t4ZZ68yhomsUYmfN5-KKOQqNg1XG2OSTX8V0-8PKvddW5hzmyseqnmno");
 
         // Get Instance ID token. Initially this makes a network call, once retrieved
         // subsequent calls to getToken will return from cache.
-   
+
     </script>
 
     <script>
 
-     messaging.getToken().then((currentToken) => {
-           if (currentToken) {
-               console.log(`TOKENNNN ${currentToken}`);
+        messaging.getToken().then((currentToken) => {
+            if (currentToken) {
+                console.log(`TOKENNNN ${currentToken}`);
                 logIt(`messaging.getToken() initial TOKENNNN ${currentToken}`);
-             //  updateUIForPushEnabled(currentToken);
-           } else {
-               // Show permission request.
-               console.log('No Instance ID token available. Request permission to generate one.');
-               // Show permission UI.
-              // updateUIForPushPermissionRequired();
-              // setTokenSentToServer(false);
-           }
-       }).catch((err) => {
-           console.log('An error occurred while retrieving token. ', err);
-        //   setTokenSentToServer(false);
-       });
+                //  updateUIForPushEnabled(currentToken);
+            } else {
+                // Show permission request.
+                console.log('No Instance ID token available. Request permission to generate one.');
+                // Show permission UI.
+                // updateUIForPushPermissionRequired();
+                // setTokenSentToServer(false);
+            }
+        }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
+            //   setTokenSentToServer(false);
+        });
 
 
 
-       // Callback fired if Instance ID token is updated.
-       messaging.onTokenRefresh(() => {
-           messaging.getToken().then((refreshedToken) => {
-               console.log('Token refreshed.');
-               // Indicate that the new Instance ID token has not yet been sent to the
-               // app server.
+        // Callback fired if Instance ID token is updated.
+        messaging.onTokenRefresh(() => {
+            messaging.getToken().then((refreshedToken) => {
+                console.log('Token refreshed.');
+                // Indicate that the new Instance ID token has not yet been sent to the
+                // app server.
 
-               console.log(`REFRESHED TOKENNNN::: ${refreshedToken}`);
-               logIt(`REFRESHED TOKENNNN::: ${refreshedToken}`);
-               // ...
-           }).catch((err) => {
-               console.log('Unable to retrieve refreshed token ', err);
+                console.log(`REFRESHED TOKENNNN::: ${refreshedToken}`);
+                logIt(`REFRESHED TOKENNNN::: ${refreshedToken}`);
+                // ...
+            }).catch((err) => {
+                console.log('Unable to retrieve refreshed token ', err);
 
-           });
-       });
+            });
+        });
 
     </script>
 </head>
