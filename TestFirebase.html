@@ -61,7 +61,7 @@
             console.log('Message received. ', payload);
             try {
                 let usefulPayload = payload.data;
-                console.log(`USEFUL DATA`, JSON.parse(usefulPayload));
+                console.log(`USEFUL DATA`, JSON.parse(usefulPayload.Body));
             } catch{ }
             logIt(`onMessage: ${JSON.stringify(payload)}`);
         });
