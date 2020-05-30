@@ -24,9 +24,8 @@
 
         function logIt(msg) {
            const loggerElem = document.getElementById('loggerBox');   
-            loggerElem.innerHTML = `<p>${msg}</p>` + loggerElem.innerHTML;
+            loggerElem.innerHTML = `<p>${unescape(msg)}</p>` + loggerElem.innerHTML;
         }
-        
         
         var firebaseConfig = {
             apiKey: "AIzaSyCBiqt_s-JfMpigb_7GvJjQGx8CPG40NL4",
