@@ -22,6 +22,12 @@
     <script>
  // Your web app's Firebase configuration
 
+        function logIt(msg) {
+           const loggerElem = document.getElementById('loggerBox');   
+            loggerElem.innerHTML += `<p>${msg}</p>`;
+        }
+        
+        
         var firebaseConfig = {
             apiKey: "AIzaSyCBiqt_s-JfMpigb_7GvJjQGx8CPG40NL4",
             authDomain: "retailcms-47e30.firebaseapp.com",
@@ -54,6 +60,7 @@ messaging.getToken().then((currentToken) => {
 
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
+             logIt(`onMessage: ${JSON.stringify(payload)}`);
         });
 
 
@@ -89,6 +96,7 @@ messaging.requestPermission()
      messaging.getToken().then((currentToken) => {
            if (currentToken) {
                console.log(`TOKENNNN ${currentToken}`);
+                logIt(`messaging.getToken() initial TOKENNNN ${currentToken}`);
              //  updateUIForPushEnabled(currentToken);
            } else {
                // Show permission request.
@@ -111,8 +119,8 @@ messaging.requestPermission()
                // Indicate that the new Instance ID token has not yet been sent to the
                // app server.
 
-               console.log(`TOKENNNN ${refreshedToken}`);
-
+               console.log(`REFRESHED TOKENNNN::: ${refreshedToken}`);
+               logIt(`REFRESHED TOKENNNN::: ${refreshedToken});
                // ...
            }).catch((err) => {
                console.log('Unable to retrieve refreshed token ', err);
