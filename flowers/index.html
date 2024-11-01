@@ -5,9 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KATARINA</title>
     <style>
-     
+        /* Full-screen setup and styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+        }
 
+        /* Container for scaling down on smaller screens */
+        #animation-container {
+            transform: scale(0.7);  /* Adjust scale for smaller screens */
+            transform-origin: top center;
+        }
 
+        /* Media query for further scaling on very small screens */
+        @media (max-width: 600px) {
+            #animation-container {
+                transform: scale(0.5); /* Further scale down on smaller screens */
+            }
+        }
     </style>
 </head>
 <body>
