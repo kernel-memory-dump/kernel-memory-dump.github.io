@@ -9,109 +9,70 @@
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow-y: auto; /* Enable vertical scrolling */
             background-color: #f3f4f6;
+            font-family: sans-serif;
         }
 
-        /* Container for scaling down on smaller screens */
-        #animation-container {
-            transform: scale(0.7);  /* Adjust scale for smaller screens */
-            transform-origin: top center;
+        /* Centering container for animation */
+        .letter-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
         }
 
-        /* Media query for further scaling on very small screens */
-        @media (max-width: 600px) {
-            #animation-container {
-                transform: scale(0.5); /* Further scale down on smaller screens */
-            }
+        /* Styling for letter images */
+        .letter {
+            opacity: 0;
+            width: 200px; /* Adjust based on desired size */
+            margin: 10px 0; /* Space between letters */
+            transform: scale(1); /* Start scale */
         }
     </style>
 </head>
 <body>
-    <div id="animation-container"></div>
+    <div class="letter-container">
+        <img src="K.png" class="letter" alt="K">
+        <img src="A1.png" class="letter" alt="A">
+        <img src="T.png" class="letter" alt="T">
+        <img src="A2.png" class="letter" alt="A">
+        <img src="R.png" class="letter" alt="R">
+        <img src="I.png" class="letter" alt="I">
+        <img src="N.png" class="letter" alt="N">
+        <img src="A3.png" class="letter" alt="A">
+    </div>
 
-    <!-- PixiJS and GSAP Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.0.4/browser/pixi.min.js"></script>
+    <!-- GSAP Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-
     <script>
-        // Set canvas dimensions based on window size in pixels
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        // Select all letters
+        const letters = document.querySelectorAll('.letter');
 
-        // Initialize PixiJS app with fixed canvas resolution (no device pixel ratio adjustment)
-        const app = new PIXI.Application({
-            width: width,
-            height: height,
-            transparent: true
+        // Create a GSAP timeline for animations
+        const timeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".letter-container",
+                start: "top center",
+                end: "bottom center",
+                scrub: true
+            }
         });
 
-        // Append the canvas directly without any DPR adjustments
-        document.getElementById("animation-container").appendChild(app.view);
-
-        // Define global scale factor for large images
-        const scaleFactor = 0.15;  // Initial scale factor for larger images
-        const letterHeight = 2048 * scaleFactor; // Approximate height of each letter after scaling
-
-        // Letter images
-        const letters = ['K', 'A', 'T', 'A', 'R', 'I', 'N', 'A'];
-        const images = [
-            'K.png', 'A1.png', 'T.png',
-            'A2.png', 'R.png', 'I.png',
-            'N.png', 'A3.png'
-        ];
-
-        // Load each image into a sprite and store in an array
-        const sprites = images.map((src, index) => {
-            const sprite = PIXI.Sprite.from(src);
-            sprite.alpha = 0;  // Initially hidden
-            sprite.anchor.set(0.5);
-            sprite.scale.set(scaleFactor);  // Set initial scale
-            app.stage.addChild(sprite);
-            return sprite;
-        });
-
-        // GSAP timeline to animate each sprite with a single fade-in
-        const timeline = gsap.timeline();
-
-        // Define initial vertical spacing to fit within the screen height
-        const initialSpacing = Math.min(150, (height - letterHeight) / letters.length);
-        
-        // Calculate the starting Y position to center the letters within the available height
-        const startY = (height - (letters.length - 1) * initialSpacing) / 2;
-
-        // Loop through each sprite to position and fade in each letter vertically
-        sprites.forEach((sprite, index) => {
-            // Position each sprite in its designated place vertically
-            let currentY = startY + index * initialSpacing;
-            sprite.position.set(width / 2, currentY);
-            
-            // Fade in each sprite without fading out
-            timeline.to(sprite, {
-                alpha: 1,
-                duration: 1, // Fade-in duration
-                delay: index * 0.5 // Staggered delay for each letter
-            });
-        });
-
-        // Add final step to increase spacing between letters and scale them down by 50%
-        timeline.add(() => {
-            sprites.forEach((sprite, index) => {
-                let finalY = startY + index * letterHeight * 0.75; // Set spacing to 75% of the letter height
-                gsap.to(sprite.position, {
-                    y: finalY,
-                    duration: 1
-                });
-                // Scale down each letter by 50%
-                gsap.to(sprite.scale, {
-                    x: scaleFactor * 0.5, 
-                    y: scaleFactor * 0.5,
-                    duration: 1
-                });
+        // Animate each letter with fade-in and scale effects
+        letters.forEach((letter, index) => {
+            timeline.to(letter, {
+                opacity: 1,
+                scale: 3,
+                duration: 1,
+                ease: "power2.out",
+                delay: index * 0.5
+            }).to(letter, {
+                scale: 0.4, // Scale down at the end
+                y: index * 5, // Increase spacing
+                duration: 1.5,
+                ease: "power2.inOut"
             });
         });
     </script>
