@@ -5,30 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KATARINA</title>
     <style>
-        /* Full-screen setup and styling */
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f3f4f6;
-        }
+     
 
-        /* Container for scaling down on smaller screens */
-        #animation-container {
-            transform: scale(0.7);  /* Adjust scale for smaller screens */
-            transform-origin: top center;
-        }
 
-        /* Media query for further scaling on very small screens */
-        @media (max-width: 600px) {
-            #animation-container {
-                transform: scale(0.5); /* Further scale down on smaller screens */
-            }
-        }
     </style>
 </head>
 <body>
@@ -39,24 +18,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 
     <script>
-        // Initialize PixiJS app to fit the full screen
+        // Handle device pixel ratio
+        const dpr = window.devicePixelRatio || 1;
+
+        // Set up scaled dimensions based on DPR
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // Initialize PixiJS app with adjusted canvas resolution for high-DPI screens
         const app = new PIXI.Application({
-            width: window.innerWidth,
-            height: window.innerHeight,
-            transparent: true,
-            resizeTo: window  // Ensure canvas resizes with the window
+            width: width * dpr,
+            height: height * dpr,
+            resolution: dpr,
+            transparent: true
         });
+
+        // Append the canvas and scale it down to fit the actual CSS dimensions
+        app.view.style.width = `${width}px`;
+        app.view.style.height = `${height}px`;
         document.getElementById("animation-container").appendChild(app.view);
 
         // Define global scale factor for large images
-        const scaleFactor = 0.15;  // Adjust scale factor for larger images
+        const scaleFactor = 0.15;  // Initial scale factor for larger images
+        const letterHeight = 2048 * scaleFactor; // Approximate height of each letter after scaling
 
         // Letter images
         const letters = ['K', 'A', 'T', 'A', 'R', 'I', 'N', 'A'];
         const images = [
-            'K.png',  'A1.png',  'T.png',
-            'A2.png',  'R.png',  'I.png',
-            'N.png',  'A3.png'
+            'K.png', 'A1.png', 'T.png',
+            'A2.png', 'R.png', 'I.png',
+            'N.png', 'A3.png'
         ];
 
         // Load each image into a sprite and store in an array
@@ -72,16 +63,17 @@
         // GSAP timeline to animate each sprite with a single fade-in
         const timeline = gsap.timeline();
 
-        // Define vertical spacing and start position for centering
-        const verticalSpacing = Math.min(400, app.view.height / letters.length * 2); // Increase spacing factor
-        const totalHeight = (letters.length - 1) * verticalSpacing; // Total height of all letters combined
-        const startY = Math.max(0, (app.view.height - totalHeight) / 2) + 200; // Starting Y position to center the letters without going off screen
+        // Define initial vertical spacing to fit within the screen height
+        const initialSpacing = Math.min(150, (height - letterHeight) / letters.length);
+        
+        // Calculate the starting Y position to center the letters within the available height
+        const startY = (height - (letters.length - 1) * initialSpacing) / 2;
 
         // Loop through each sprite to position and fade in each letter vertically
         sprites.forEach((sprite, index) => {
             // Position each sprite in its designated place vertically
-            let currentY = startY + index * verticalSpacing;
-            sprite.position.set(app.view.width / 2, currentY);
+            let currentY = startY + index * initialSpacing;
+            sprite.position.set(width / 2, currentY);
             
             // Fade in each sprite without fading out
             timeline.to(sprite, {
@@ -91,6 +83,22 @@
             });
         });
 
+        // Add final step to increase spacing between letters and scale them down by 50%
+        timeline.add(() => {
+            sprites.forEach((sprite, index) => {
+                let finalY = startY + index * letterHeight * 0.75; // Set spacing to 75% of the letter height
+                gsap.to(sprite.position, {
+                    y: finalY,
+                    duration: 1
+                });
+                // Scale down each letter by 50%
+                gsap.to(sprite.scale, {
+                    x: scaleFactor * 0.5, 
+                    y: scaleFactor * 0.5,
+                    duration: 1
+                });
+            });
+        });
     </script>
 </body>
 </html>
