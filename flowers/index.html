@@ -39,24 +39,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 
     <script>
-        // Handle device pixel ratio
-        const dpr = window.devicePixelRatio || 1;
-
-        // Set up scaled dimensions based on DPR
+        // Set canvas dimensions based on window size in pixels
         const width = window.innerWidth;
         const height = window.innerHeight;
 
-        // Initialize PixiJS app with adjusted canvas resolution for high-DPI screens
+        // Initialize PixiJS app with fixed canvas resolution (no device pixel ratio adjustment)
         const app = new PIXI.Application({
-            width: width * dpr,
-            height: height * dpr,
-            resolution: dpr,
+            width: width,
+            height: height,
             transparent: true
         });
 
-        // Append the canvas and scale it down to fit the actual CSS dimensions
-        app.view.style.width = `${width}px`;
-        app.view.style.height = `${height}px`;
+        // Append the canvas directly without any DPR adjustments
         document.getElementById("animation-container").appendChild(app.view);
 
         // Define global scale factor for large images
