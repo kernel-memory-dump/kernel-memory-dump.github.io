@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KATARINA Animation</title>
+    <style>
+        /* Full-screen setup and styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div id="animation-container"></div>
+
+    <!-- PixiJS and GSAP Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.0.4/browser/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <script>
+        // Initialize PixiJS app to fit the full screen
+        const app = new PIXI.Application({
+            width: window.innerWidth,
+            height: window.innerHeight,
+            transparent: true,
+            resizeTo: window  // Ensure canvas resizes with the window
+        });
+        document.getElementById("animation-container").appendChild(app.view);
+
+        // Define global scale factor for large images
+        const scaleFactor = 0.15;  // Adjust scale factor for larger images
+
+        // Letter images
+        const letters = ['K', 'A', 'T', 'A', 'R', 'I', 'N', 'A'];
+        const images = [
+        'k.png',  'k.png',  'k.png',
+        'k.png',  'k.png',  'k.png',
+        'k.png',  'k.png'
+    ];
+        // Load each image into a sprite and store in an array
+        const sprites = images.map((src, index) => {
+            const sprite = PIXI.Sprite.from(src);
+            sprite.alpha = 0;  // Initially hidden
+            sprite.anchor.set(0.5);
+            sprite.scale.set(scaleFactor);  // Set initial scale
+            app.stage.addChild(sprite);
+            return sprite;
+        });
+
+        // GSAP timeline to animate each sprite with a single fade-in
+        const timeline = gsap.timeline();
+
+        // Define spacing and start position for centering
+        const spacing = 300; // Increased spacing between letters
+        const totalWidth = (letters.length - 1) * spacing; // Total width of all letters combined
+        const startX = (app.view.width - totalWidth) / 2; // Starting X position to center the letters
+
+        let previousX = 0;
+        // Loop through each sprite to position and fade in each letter
+        sprites.forEach((sprite, index) => {
+            // Position each sprite in its designated place horizontally
+            let currentX = startX + index * spacing;
+            sprite.position.set(currentX, app.view.height / 2);
+            previousX = currentX;
+            
+            // Fade in each sprite without fading out
+            timeline.to(sprite, {
+                alpha: 1,
+                duration: 1, // Fade-in duration
+                delay: index * 0.5 // Staggered delay for each letter
+            });
+        });
+    </script>
+</body>
+</html>
