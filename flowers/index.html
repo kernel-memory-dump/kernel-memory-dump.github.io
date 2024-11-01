@@ -16,6 +16,19 @@
             align-items: center;
             background-color: #f3f4f6;
         }
+
+        /* Container for scaling down on smaller screens */
+        #animation-container {
+            transform: scale(0.7);  /* Adjust scale for smaller screens */
+            transform-origin: top center;
+        }
+
+        /* Media query for further scaling on very small screens */
+        @media (max-width: 600px) {
+            #animation-container {
+                transform: scale(0.5); /* Further scale down on smaller screens */
+            }
+        }
     </style>
 </head>
 <body>
@@ -41,10 +54,11 @@
         // Letter images
         const letters = ['K', 'A', 'T', 'A', 'R', 'I', 'N', 'A'];
         const images = [
-        'K.png',  'A1.png',  'T.png',
-        'A2.png',  'R.png',  'I.png',
-        'N.png',  'A3.png'
-    ];
+            'K.png',  'A1.png',  'T.png',
+            'A2.png',  'R.png',  'I.png',
+            'N.png',  'A3.png'
+        ];
+
         // Load each image into a sprite and store in an array
         const sprites = images.map((src, index) => {
             const sprite = PIXI.Sprite.from(src);
@@ -58,18 +72,16 @@
         // GSAP timeline to animate each sprite with a single fade-in
         const timeline = gsap.timeline();
 
-        // Define spacing and start position for centering
-        const spacing = 300; // Increased spacing between letters
-        const totalWidth = (letters.length - 1) * spacing; // Total width of all letters combined
-        const startX = (app.view.width - totalWidth) / 2; // Starting X position to center the letters
+        // Define vertical spacing and start position for centering
+        const verticalSpacing = Math.min(400, app.view.height / letters.length * 2); // Increase spacing factor
+        const totalHeight = (letters.length - 1) * verticalSpacing; // Total height of all letters combined
+        const startY = Math.max(0, (app.view.height - totalHeight) / 2) + 200; // Starting Y position to center the letters without going off screen
 
-        let previousX = 0;
-        // Loop through each sprite to position and fade in each letter
+        // Loop through each sprite to position and fade in each letter vertically
         sprites.forEach((sprite, index) => {
-            // Position each sprite in its designated place horizontally
-            let currentX = startX + index * spacing;
-            sprite.position.set(currentX, app.view.height / 2);
-            previousX = currentX;
+            // Position each sprite in its designated place vertically
+            let currentY = startY + index * verticalSpacing;
+            sprite.position.set(app.view.width / 2, currentY);
             
             // Fade in each sprite without fading out
             timeline.to(sprite, {
@@ -78,6 +90,7 @@
                 delay: index * 0.5 // Staggered delay for each letter
             });
         });
+
     </script>
 </body>
 </html>
